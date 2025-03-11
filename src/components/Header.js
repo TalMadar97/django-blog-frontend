@@ -1,10 +1,10 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Navbar, Nav, Container, Button, NavDropdown } from "react-bootstrap";
-import { useAuth } from "../context/AuthContext"; 
+import { Navbar, Nav, Container, NavDropdown } from "react-bootstrap";
+import { useAuth } from "../context/AuthContext";
 
 function Header() {
   const navigate = useNavigate();
-  const { user, logout } = useAuth(); 
+  const { user, logout } = useAuth(); // ✅ משתמשים ישירות ב־user, בלי useState מיותר
 
   const handleLogout = () => {
     logout();
@@ -12,7 +12,7 @@ function Header() {
   };
 
   return (
-    <Navbar bg="dark" variant="dark" expand="lg">
+    <Navbar variant="light" expand="lg">
       <Container>
         <Navbar.Brand as={Link} to="/">
           MyBlog
@@ -23,19 +23,16 @@ function Header() {
             <Nav.Link as={Link} to="/">
               Home
             </Nav.Link>
-
             {user ? (
-              <>
-                <NavDropdown title={user.username} id="user-dropdown">
-                  <NavDropdown.Item as={Link} to="/dashboard">
-                    Dashboard
-                  </NavDropdown.Item>
-                  <NavDropdown.Divider />
-                  <NavDropdown.Item onClick={handleLogout}>
-                    Logout
-                  </NavDropdown.Item>
-                </NavDropdown>
-              </>
+              <NavDropdown title={user.username || "User"} id="user-dropdown">
+                <NavDropdown.Item as={Link} to="/dashboard">
+                  Dashboard
+                </NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item onClick={handleLogout}>
+                  Logout
+                </NavDropdown.Item>
+              </NavDropdown>
             ) : (
               <>
                 <Nav.Link as={Link} to="/login">
