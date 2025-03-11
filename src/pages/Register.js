@@ -7,22 +7,49 @@ function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  const validateInputs = () => {
+    // ✅ Username validation: No spaces allowed
+    if (username.includes(" ")) {
+      return "Username cannot contain spaces.";
+    }
+
+    // ✅ Email validation: Basic format check
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return "Enter a valid email address.";
+    }
+
+    // ✅ Password validation: At least 8 characters with one uppercase letter
+    if (password.length < 8) {
+      return "Password must be at least 8 characters long.";
+    }
+    if (!/[A-Z]/.test(password)) {
+      return "Password must contain at least one uppercase letter.";
+    }
+
+    return null; // No errors
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setSuccess(false);
     setLoading(true);
 
-    if (!username || !email || !password) {
-      setError("Please fill in all fields");
+    // ✅ Client-side validation before sending request
+    const validationError = validateInputs();
+    if (validationError) {
+      setError(validationError);
       setLoading(false);
       return;
     }
 
     try {
-      const response = await fetch("http://localhost:8181/api/register/", {
+      const response = await fetch("http://localhost:8000/api/register/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, email, password }),
@@ -34,11 +61,13 @@ function Register() {
         throw new Error(data.error || "Registration failed");
       }
 
-      // ✅ שמירת המשתמש ב־localStorage
-      localStorage.setItem("user", JSON.stringify(data));
+      // ✅ Show success message
+      setSuccess(true);
 
-      // ✅ הפניית המשתמש לעמוד הבית לאחר רישום מוצלח
-      navigate("/");
+      // ✅ Redirect to login after 2 seconds
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -52,6 +81,11 @@ function Register() {
         <Col xs={12} md={6}>
           <h2 className="text-center">Register</h2>
           {error && <Alert variant="danger">{error}</Alert>}
+          {success && (
+            <Alert variant="success">
+              Registration successful! Redirecting to login...
+            </Alert>
+          )}
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="username">
               <Form.Label>Username</Form.Label>

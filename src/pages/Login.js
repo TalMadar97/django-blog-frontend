@@ -3,7 +3,7 @@ import { Container, Form, Button, Row, Col, Alert } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 
 function Login() {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -14,17 +14,17 @@ function Login() {
     setError("");
     setLoading(true);
 
-    if (!email || !password) {
+    if (!username || !password) {
       setError("Please fill in all fields");
       setLoading(false);
       return;
     }
 
     try {
-      const response = await fetch("http://localhost:8181/api/token/", {
+      const response = await fetch("http://localhost:8000/api/token/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username: email, password }),
+        body: JSON.stringify({ username, password }),
       });
 
       const data = await response.json();
@@ -33,10 +33,8 @@ function Login() {
         throw new Error(data.detail || "Login failed");
       }
 
-      // ✅ שמירת טוקן ב־localStorage
       localStorage.setItem("user", JSON.stringify(data));
 
-      // ✅ הפניית המשתמש לעמוד הבית
       navigate("/");
     } catch (err) {
       setError(err.message);
@@ -52,13 +50,13 @@ function Login() {
           <h2 className="text-center">Login</h2>
           {error && <Alert variant="danger">{error}</Alert>}
           <Form onSubmit={handleSubmit}>
-            <Form.Group className="mb-3" controlId="email">
-              <Form.Label>Email Address</Form.Label>
+            <Form.Group className="mb-3" controlId="username">
+              <Form.Label>Username</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Enter username"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
               />
             </Form.Group>
 
