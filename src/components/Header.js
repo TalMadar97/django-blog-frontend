@@ -1,19 +1,13 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Navbar, Nav, Container, Button, NavDropdown } from "react-bootstrap";
-import { useState, useEffect } from "react";
+import { useAuth } from "../context/AuthContext"; 
 
 function Header() {
   const navigate = useNavigate();
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem("user"));
-    setUser(storedUser);
-  }, []);
+  const { user, logout } = useAuth(); 
 
   const handleLogout = () => {
-    localStorage.removeItem("user");
-    setUser(null);
+    logout();
     navigate("/login");
   };
 
