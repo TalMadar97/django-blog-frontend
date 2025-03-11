@@ -1,4 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AuthContext = createContext();
 
@@ -41,12 +43,14 @@ export const AuthProvider = ({ children }) => {
   const login = async (userData) => {
     localStorage.setItem("user", JSON.stringify(userData));
     await fetchUserProfile(userData);
-    setUser(userData); // ✅ שינוי קריטי – גורם לרינדור מיידי
+    setUser(userData);
+    toast.success("Login successful!");
   };
 
   const logout = () => {
     localStorage.removeItem("user");
     setUser(null);
+    toast.info("Logged out successfully");
   };
 
   return (

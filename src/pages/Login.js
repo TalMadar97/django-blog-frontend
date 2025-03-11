@@ -1,21 +1,21 @@
 import { useState } from "react";
-import { Container, Form, Button, Row, Col, Alert } from "react-bootstrap";
+import { Container, Form, Button, Row, Col } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
     setLoading(true);
 
     if (!username || !password) {
-      setError("Please fill in all fields");
+      toast.error("Please fill in all fields");
       setLoading(false);
       return;
     }
@@ -34,10 +34,12 @@ function Login() {
       }
 
       localStorage.setItem("user", JSON.stringify(data));
-
-      navigate("/");
+      toast.success("Login successful!");
+      setTimeout(() => {
+        navigate("/");
+      }, 1000);
     } catch (err) {
-      setError(err.message);
+      toast.error(err.message);
     } finally {
       setLoading(false);
     }
@@ -48,7 +50,6 @@ function Login() {
       <Row className="justify-content-md-center">
         <Col xs={12} md={6}>
           <h2 className="text-center">Login</h2>
-          {error && <Alert variant="danger">{error}</Alert>}
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="username">
               <Form.Label>Username</Form.Label>

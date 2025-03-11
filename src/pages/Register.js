@@ -1,49 +1,40 @@
 import { useState } from "react";
-import { Container, Form, Button, Row, Col, Alert } from "react-bootstrap";
+import { Container, Form, Button, Row, Col } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Register() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const validateInputs = () => {
-    // ✅ Username validation: No spaces allowed
     if (username.includes(" ")) {
       return "Username cannot contain spaces.";
     }
-
-    // ✅ Email validation: Basic format check
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return "Enter a valid email address.";
     }
-
-    // ✅ Password validation: At least 8 characters with one uppercase letter
     if (password.length < 8) {
       return "Password must be at least 8 characters long.";
     }
     if (!/[A-Z]/.test(password)) {
       return "Password must contain at least one uppercase letter.";
     }
-
-    return null; // No errors
+    return null;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
-    setSuccess(false);
     setLoading(true);
 
-    // ✅ Client-side validation before sending request
     const validationError = validateInputs();
     if (validationError) {
-      setError(validationError);
+      toast.error(validationError);
       setLoading(false);
       return;
     }
@@ -61,15 +52,12 @@ function Register() {
         throw new Error(data.error || "Registration failed");
       }
 
-      // ✅ Show success message
-      setSuccess(true);
-
-      // ✅ Redirect to login after 2 seconds
+      toast.success("Registration successful! Redirecting...");
       setTimeout(() => {
         navigate("/login");
       }, 2000);
     } catch (err) {
-      setError(err.message);
+      toast.error(err.message);
     } finally {
       setLoading(false);
     }
@@ -80,12 +68,6 @@ function Register() {
       <Row className="justify-content-md-center">
         <Col xs={12} md={6}>
           <h2 className="text-center">Register</h2>
-          {error && <Alert variant="danger">{error}</Alert>}
-          {success && (
-            <Alert variant="success">
-              Registration successful! Redirecting to login...
-            </Alert>
-          )}
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="username">
               <Form.Label>Username</Form.Label>

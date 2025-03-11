@@ -1,10 +1,16 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Navbar, Nav, Container, NavDropdown } from "react-bootstrap";
 import { useAuth } from "../context/AuthContext";
+import { useEffect, useState } from "react";
 
 function Header() {
   const navigate = useNavigate();
-  const { user, logout } = useAuth(); // ✅ משתמשים ישירות ב־user, בלי useState מיותר
+  const { user, logout } = useAuth();
+  const [currentUser, setCurrentUser] = useState(user);
+
+  useEffect(() => {
+    setCurrentUser(user);
+  }, [user]);
 
   const handleLogout = () => {
     logout();
@@ -23,8 +29,11 @@ function Header() {
             <Nav.Link as={Link} to="/">
               Home
             </Nav.Link>
-            {user ? (
-              <NavDropdown title={user.username || "User"} id="user-dropdown">
+            {currentUser ? (
+              <NavDropdown
+                title={currentUser.username || "User"}
+                id="user-dropdown"
+              >
                 <NavDropdown.Item as={Link} to="/dashboard">
                   Dashboard
                 </NavDropdown.Item>
