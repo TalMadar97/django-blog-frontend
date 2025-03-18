@@ -23,11 +23,18 @@ function Header() {
             <Nav.Link as={Link} to="/">
               Home
             </Nav.Link>
+
             {user && (
-              <Nav.Link as={Link} to="/new-article">
-                New Article
-              </Nav.Link>
+              <>
+                <Nav.Link as={Link} to="/new-article">
+                  New Article
+                </Nav.Link>
+                <Nav.Link as={Link} to="/favorites">
+                  Favorites
+                </Nav.Link>
+              </>
             )}
+
             {user ? (
               <NavDropdown title={user.username || "User"} id="user-dropdown">
                 <NavDropdown.Item as={Link} to="/dashboard">

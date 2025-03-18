@@ -16,6 +16,7 @@ function ArticleDetail() {
   const [newComment, setNewComment] = useState("");
   const [likes, setLikes] = useState(0);
   const [liked, setLiked] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
 
   useEffect(() => {
     const fetchArticle = async () => {
@@ -29,7 +30,11 @@ function ArticleDetail() {
         const data = await response.json();
         setArticle(data);
         setLikes(data.total_likes || 0);
-        setLiked(Array.isArray(data.likes) && data.likes.includes(user?.id)); // בדיקה שהמערך קיים
+        setLiked(Array.isArray(data.likes) && data.likes.includes(user?.id));
+        setIsFavorite(
+          Array.isArray(data.favorited_by) &&
+            data.favorited_by.includes(user?.id)
+        );
       } catch (err) {
         setError(err.message);
       } finally {
@@ -67,9 +72,7 @@ function ArticleDetail() {
         `http://localhost:8000/api/articles/${id}/like/`,
         {
           method: "POST",
-          headers: {
-            Authorization: `Bearer ${user.access}`,
-          },
+          headers: { Authorization: `Bearer ${user.access}` },
         }
       );
 
@@ -80,6 +83,34 @@ function ArticleDetail() {
       setLikes((prev) => (liked ? prev - 1 : prev + 1));
       setLiked(!liked);
       toast.success(liked ? "Like removed" : "Article liked!");
+    } catch (err) {
+      toast.error(err.message);
+    }
+  };
+
+  const handleFavorite = async () => {
+    if (!user) {
+      toast.error("You need to log in to save articles as favorites");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `http://localhost:8000/api/articles/${id}/favorite/`,
+        {
+          method: "POST",
+          headers: { Authorization: `Bearer ${user.access}` },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to update favorites");
+      }
+
+      setIsFavorite(!isFavorite);
+      toast.success(
+        isFavorite ? "Removed from favorites" : "Added to favorites!"
+      );
     } catch (err) {
       toast.error(err.message);
     }
@@ -118,32 +149,6 @@ function ArticleDetail() {
     }
   };
 
-  const handleDeleteComment = async (commentId) => {
-    if (!window.confirm("Are you sure you want to delete this comment?"))
-      return;
-
-    try {
-      const response = await fetch(
-        `http://localhost:8000/api/comments/${commentId}/`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${user.access}`,
-          },
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to delete comment");
-      }
-
-      setComments(comments.filter((comment) => comment.id !== commentId));
-      toast.success("Comment deleted successfully!");
-    } catch (err) {
-      toast.error(err.message);
-    }
-  };
-
   const handleDeleteArticle = async () => {
     if (!window.confirm("Are you sure you want to delete this article?"))
       return;
@@ -153,9 +158,7 @@ function ArticleDetail() {
         `http://localhost:8000/api/articles/${id}/`,
         {
           method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${user.access}`,
-          },
+          headers: { Authorization: `Bearer ${user.access}` },
         }
       );
 
@@ -208,6 +211,13 @@ function ArticleDetail() {
               >
                 {liked ? "Unlike" : "Like"} ({likes})
               </Button>
+
+              <Button
+                variant={isFavorite ? "success" : "outline-success"}
+                onClick={handleFavorite}
+              >
+                {isFavorite ? "Remove from Favorites" : "Add to Favorites"}
+              </Button>
             </div>
 
             {user && user.id === article.author?.id && (
@@ -239,15 +249,6 @@ function ArticleDetail() {
                 {comment.user?.username || "Unknown"} -{" "}
                 {new Date(comment.created_at).toLocaleString()}
               </Card.Footer>
-              {user && user.id === comment.user?.id && (
-                <Button
-                  variant="danger"
-                  size="sm"
-                  onClick={() => handleDeleteComment(comment.id)}
-                >
-                  Delete
-                </Button>
-              )}
             </Card.Body>
           </Card>
         ))
