@@ -6,8 +6,9 @@ import NotFound from "./pages/NotFound";
 import Header from "./components/Header";
 import ArticleDetail from "./pages/ArticleDetail";
 import Dashboard from "./pages/Dashboard";
+import NewArticle from "./pages/NewArticle";
+import EditArticle from "./pages/EditArticle"; 
 import ProtectedRoute from "./components/ProtectedRoute";
-import NewArticle from "./pages/NewArticle"; 
 
 function App() {
   return (
@@ -31,6 +32,14 @@ function App() {
           element={
             <ProtectedRoute>
               <NewArticle />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/article/edit/:id"
+          element={
+            <ProtectedRoute>
+              <EditArticle />
             </ProtectedRoute>
           }
         />

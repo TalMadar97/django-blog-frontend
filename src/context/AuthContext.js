@@ -42,7 +42,9 @@ export const AuthProvider = ({ children }) => {
   };
 
   const login = async (userData) => {
+    setUser(userData);
     localStorage.setItem("user", JSON.stringify(userData));
+
     await fetchUserProfile(userData);
     toast.success("Login successful!");
   };
