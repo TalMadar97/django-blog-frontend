@@ -7,6 +7,7 @@ import Header from "./components/Header";
 import ArticleDetail from "./pages/ArticleDetail";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
+import NewArticle from "./pages/NewArticle"; 
 
 function App() {
   return (
@@ -22,6 +23,14 @@ function App() {
           element={
             <ProtectedRoute>
               <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/new-article"
+          element={
+            <ProtectedRoute>
+              <NewArticle />
             </ProtectedRoute>
           }
         />
