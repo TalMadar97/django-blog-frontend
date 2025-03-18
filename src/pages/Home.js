@@ -10,7 +10,9 @@ function Home() {
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        const response = await fetch("http://localhost:8000/api/articles/");
+        const response = await fetch(
+          "https://myblog-backend-lvtd.onrender.com/api/articles/"
+        );
         const data = await response.json();
 
         if (!response.ok) {

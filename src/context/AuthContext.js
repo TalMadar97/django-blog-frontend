@@ -19,12 +19,15 @@ export const AuthProvider = ({ children }) => {
 
   const fetchUserProfile = async (storedUser) => {
     try {
-      const response = await fetch("http://localhost:8000/api/profile/", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${storedUser.access}`,
-        },
-      });
+      const response = await fetch(
+        "https://myblog-backend-lvtd.onrender.com/api/profile/",
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${storedUser.access}`,
+          },
+        }
+      );
 
       if (!response.ok) throw new Error("Failed to fetch user profile");
 

@@ -25,14 +25,17 @@ function NewArticle() {
     }
 
     try {
-      const response = await fetch("http://localhost:8000/api/articles/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user.access}`,
-        },
-        body: JSON.stringify({ title, content }),
-      });
+      const response = await fetch(
+        "https://myblog-backend-lvtd.onrender.com/api/articles/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.access}`,
+          },
+          body: JSON.stringify({ title, content }),
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to create article");

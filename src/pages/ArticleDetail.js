@@ -22,7 +22,7 @@ function ArticleDetail() {
     const fetchArticle = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8000/api/articles/${id}/`
+          `https://myblog-backend-lvtd.onrender.com/articles/${id}/`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch article");
@@ -45,7 +45,7 @@ function ArticleDetail() {
     const fetchComments = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8000/api/articles/${id}/comments/`
+          `https://myblog-backend-lvtd.onrender.com/articles/${id}/comments/`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch comments");
@@ -69,7 +69,7 @@ function ArticleDetail() {
 
     try {
       const response = await fetch(
-        `http://localhost:8000/api/articles/${id}/like/`,
+        `https://myblog-backend-lvtd.onrender.com/api/articles/${id}/like/`,
         {
           method: "POST",
           headers: { Authorization: `Bearer ${user.access}` },
@@ -96,7 +96,7 @@ function ArticleDetail() {
 
     try {
       const response = await fetch(
-        `http://localhost:8000/api/articles/${id}/favorite/`,
+        `https://myblog-backend-lvtd.onrender.com/api/articles/${id}/favorite/`,
         {
           method: "POST",
           headers: { Authorization: `Bearer ${user.access}` },
@@ -125,7 +125,7 @@ function ArticleDetail() {
 
     try {
       const response = await fetch(
-        `http://localhost:8000/api/articles/${id}/comments/`,
+        `https://myblog-backend-lvtd.onrender.com/api/articles/${id}/comments/`,
         {
           method: "POST",
           headers: {
@@ -155,7 +155,7 @@ function ArticleDetail() {
 
     try {
       const response = await fetch(
-        `http://localhost:8000/api/articles/${id}/`,
+        `https://myblog-backend-lvtd.onrender.com/api/articles/${id}/`,
         {
           method: "DELETE",
           headers: { Authorization: `Bearer ${user.access}` },

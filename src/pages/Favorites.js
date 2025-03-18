@@ -15,7 +15,7 @@ function Favorites() {
     const fetchFavorites = async () => {
       try {
         const response = await fetch(
-          "http://localhost:8000/api/articles/favorites/",
+          "https://myblog-backend-lvtd.onrender.com/api/articles/favorites/",
           {
             headers: { Authorization: `Bearer ${user.access}` },
           }

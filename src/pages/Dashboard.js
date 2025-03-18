@@ -28,14 +28,17 @@ function Dashboard() {
     setSuccess(false);
 
     try {
-      const response = await fetch("http://localhost:8000/api/profile/", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user.access}`,
-        },
-        body: JSON.stringify({ username, email, bio }),
-      });
+      const response = await fetch(
+        "https://myblog-backend-lvtd.onrender.com/api/profile/",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.access}`,
+          },
+          body: JSON.stringify({ username, email, bio }),
+        }
+      );
 
       const data = await response.json();
 

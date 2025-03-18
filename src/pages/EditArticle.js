@@ -18,7 +18,7 @@ function EditArticle() {
     const fetchArticle = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8000/api/articles/${id}/`
+          `https://myblog-backend-lvtd.onrender.com/api/articles/${id}/`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch article");
@@ -51,7 +51,7 @@ function EditArticle() {
 
     try {
       const response = await fetch(
-        `http://localhost:8000/api/articles/${id}/`,
+        `https://myblog-backend-lvtd.onrender.com/api/articles/${id}/`,
         {
           method: "PUT",
           headers: {
