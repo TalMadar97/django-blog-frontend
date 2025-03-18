@@ -5,6 +5,8 @@ import Register from "./pages/Register";
 import NotFound from "./pages/NotFound";
 import Header from "./components/Header";
 import ArticleDetail from "./pages/ArticleDetail";
+import Dashboard from "./pages/Dashboard";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
@@ -15,6 +17,14 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/article/:id" element={<ArticleDetail />} />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>
