@@ -4,7 +4,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import NotFound from "./pages/NotFound";
 import Header from "./components/Header";
-import ArticleDetail from "./pages/ArticleDetail"; 
+import ArticleDetail from "./pages/ArticleDetail";
 
 function App() {
   return (
@@ -14,8 +14,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/article/:id" element={<ArticleDetail />} />{" "}
-        {/* ✅ Add route */}
+        <Route path="/article/:id" element={<ArticleDetail />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>

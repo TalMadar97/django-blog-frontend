@@ -10,7 +10,7 @@ function Header() {
 
   useEffect(() => {
     setCurrentUser(user);
-  }, [user]);
+  }, [user]); // מאזין לשינויים במשתמש
 
   const handleLogout = () => {
     logout();
