@@ -22,7 +22,7 @@ function ArticleDetail() {
     const fetchArticle = async () => {
       try {
         const response = await fetch(
-          `https://myblog-backend-lvtd.onrender.com/articles/${id}/`
+          `https://myblog-backend-lvtd.onrender.com/api/articles/${id}/`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch article");
@@ -45,7 +45,7 @@ function ArticleDetail() {
     const fetchComments = async () => {
       try {
         const response = await fetch(
-          `https://myblog-backend-lvtd.onrender.com/articles/${id}/comments/`
+          `https://myblog-backend-lvtd.onrender.com/api/articles/${id}/comments/`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch comments");
